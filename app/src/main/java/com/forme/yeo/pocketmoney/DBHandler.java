@@ -134,8 +134,19 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         String sql = "SELECT * " +
                 " FROM " + TABLE_DETAIL +
-                " WHERE " + DETAIL_YEAR + " = ? AND " + DETAIL_MONTH + " = ?";
+                " WHERE " + DETAIL_YEAR + " = ? AND " + DETAIL_MONTH + " = ?" ;
         Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(y), String.valueOf(m)});
+        List<HashMap<String, Object>> getList = convertToList(cursor);
+        db.close();
+        return getList;
+    }
+
+    public List<HashMap<String, Object>> getDayDetail (int y, int m, int d){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sql = "SELECT * " +
+                " FROM " + TABLE_DETAIL +
+                " WHERE " + DETAIL_YEAR + " = ? AND " + DETAIL_MONTH + " = ? AND " + DETAIL_DAY + " = ?"  ;
+        Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(y), String.valueOf(m), String.valueOf(d)});
         List<HashMap<String, Object>> getList = convertToList(cursor);
         db.close();
         return getList;

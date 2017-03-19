@@ -63,7 +63,6 @@ public class Main2Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 int amount = Integer.parseInt(etAmount.getText().toString());
-                Log.v("qweqweqwe", etDate.getText().toString());
                 String date = etDate.getText().toString();
                 String describe = etDescribe.getText().toString();
                 String type = spnType.getSelectedItem().toString();

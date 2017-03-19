@@ -16,9 +16,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
     private GridView gridView = null;
 
     private ViewFlipper viewFlipper;
-    private Button btnNowMonth, btnLastMonth, btnNextMonth;
+    private TextView btnNowMonth;
+    private Button btnLastMonth, btnNextMonth;
     private TextView tvMonthAmount;
 
     private int viewFlipperFlag = 0;
@@ -51,6 +57,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        btnLastMonth = (Button) findViewById(R.id.lastMonth);
+        btnNextMonth = (Button) findViewById(R.id.nextMonth);
+        btnNowMonth = (TextView) findViewById(R.id.nowMonth);
+        tvMonthAmount = (TextView) findViewById(R.id.monthAmount);
+        viewFlipper = (ViewFlipper)findViewById(R.id.viewForCalendar);
+
+        viewFlipper.removeAllViews();
 
         dbHandler = new DBHandler(MainActivity.this);
         initialView();
@@ -62,6 +75,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initialView();
     }
 
     @Override
@@ -117,13 +136,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void initialView(){
-        btnLastMonth = (Button) findViewById(R.id.lastMonth);
-        btnNextMonth = (Button) findViewById(R.id.nextMonth);
-        btnNowMonth = (Button) findViewById(R.id.nowMonth);
-        tvMonthAmount = (TextView) findViewById(R.id.monthAmount);
-        viewFlipper = (ViewFlipper)findViewById(R.id.viewForCalendar);
-
-        viewFlipper.removeAllViews();
         setListener();
         getCurrentDate();
         changeGridView();
@@ -142,6 +154,9 @@ public class MainActivity extends AppCompatActivity {
                             jumpYear--;
                         }
                         viewFlipperFlag--;
+                        changeGridView();
+                        viewFlipper.showPrevious();
+                        viewFlipper.removeViewAt(0);
                         break;
                     case R.id.nextMonth:
                         jumpMonth++;
@@ -150,13 +165,27 @@ public class MainActivity extends AppCompatActivity {
                             jumpYear++;
                         }
                         viewFlipperFlag++;
+                        changeGridView();
+                        viewFlipper.showNext();
+                        viewFlipper.removeViewAt(0);
                         break;
                     default:
 
                 }
-                changeGridView();
-                viewFlipper.showPrevious();
-                viewFlipper.removeViewAt(0);
+            }
+        };
+    }
+
+    public AdapterView.OnItemClickListener itemClickEvent(){
+        return new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, DailyDetail.class);
+                CalendarCell calendarCell = (CalendarCell) view;
+                intent.putExtra("year", calendarCell.getYear());
+                intent.putExtra("month", calendarCell.getMonth());
+                intent.putExtra("day", calendarCell.getDay());
+                startActivity(intent);
             }
         };
     }
@@ -187,6 +216,7 @@ public class MainActivity extends AppCompatActivity {
         gridView.setGravity(Gravity.CENTER_VERTICAL);
         gridView.setLayoutParams(params);
         gridView.setAdapter(ca);
+        gridView.setOnItemClickListener(itemClickEvent());
 
         viewFlipper.addView(gridView, viewFlipperFlag, params);
         viewFlipperFlag=0;
