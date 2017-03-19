@@ -42,14 +42,11 @@ public class MainActivity extends AppCompatActivity {
     private int jumpMonth = 0, jumpYear = 0;
     private String strCurrentDate = "";
 
-    private GridView gridView = null;
-
-    private ViewFlipper viewFlipper;
+    private GridView gridView;
     private TextView btnNowMonth;
     private Button btnLastMonth, btnNextMonth;
     private TextView tvMonthAmount;
 
-    private int viewFlipperFlag = 0;
     private DBHandler dbHandler = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +58,7 @@ public class MainActivity extends AppCompatActivity {
         btnNextMonth = (Button) findViewById(R.id.nextMonth);
         btnNowMonth = (TextView) findViewById(R.id.nowMonth);
         tvMonthAmount = (TextView) findViewById(R.id.monthAmount);
-        viewFlipper = (ViewFlipper)findViewById(R.id.viewForCalendar);
-
-        viewFlipper.removeAllViews();
+        gridView = (GridView)findViewById(R.id.viewForCalendar);
 
         dbHandler = new DBHandler(MainActivity.this);
         initialView();
@@ -153,10 +148,7 @@ public class MainActivity extends AppCompatActivity {
                             jumpMonth = 12;
                             jumpYear--;
                         }
-                        viewFlipperFlag--;
                         changeGridView();
-                        viewFlipper.showPrevious();
-                        viewFlipper.removeViewAt(0);
                         break;
                     case R.id.nextMonth:
                         jumpMonth++;
@@ -164,10 +156,7 @@ public class MainActivity extends AppCompatActivity {
                             jumpMonth = 1;
                             jumpYear++;
                         }
-                        viewFlipperFlag++;
                         changeGridView();
-                        viewFlipper.showNext();
-                        viewFlipper.removeViewAt(0);
                         break;
                     default:
 
@@ -205,21 +194,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void changeGridView(){
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         CalendarAdapter ca = new CalendarAdapter(this, getResources(), jumpMonth, jumpYear);
         tvMonthAmount.setText(dbHandler.getMonthAmount(jumpYear, jumpMonth) + "");
         btnNowMonth.setText(jumpYear + "-" + jumpMonth);
-        gridView = new GridView(this);
-        WindowManager windowManager = ((Activity)this).getWindowManager();
-        Display display = windowManager.getDefaultDisplay();
-        gridView.setNumColumns(7);
-        gridView.setGravity(Gravity.CENTER_VERTICAL);
-        gridView.setLayoutParams(params);
         gridView.setAdapter(ca);
         gridView.setOnItemClickListener(itemClickEvent());
-
-        viewFlipper.addView(gridView, viewFlipperFlag, params);
-        viewFlipperFlag=0;
     }
 
 }
