@@ -9,8 +9,10 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private int cur_year = 0;
     private int cur_month = 0;
     private int cur_day = 0;
+    private float touchDX= 0, touchDY = 0;
     private int jumpMonth = 0, jumpYear = 0;
     private String strCurrentDate = "";
 
@@ -68,6 +71,29 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, Main2Activity.class);
                 startActivity(intent);
+            }
+        });
+        gridView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        float difX = event.getX() - touchDX;
+                        float difY = Math.abs(event.getY() - touchDY);
+                        if (difY < 60 && Math.abs(difX) > 200){
+                            if ( difX < 0){
+                                changeMonth(false);
+                            }else {
+                                changeMonth(true);
+                            }
+                        }
+                        break;
+                    case MotionEvent.ACTION_DOWN:
+                        touchDX = event.getX();
+                        touchDY = event.getY();
+                        break;
+                }
+                return true;
             }
         });
     }
@@ -136,6 +162,23 @@ public class MainActivity extends AppCompatActivity {
         changeGridView();
     }
 
+    public void changeMonth( boolean nextMonth){
+        if (nextMonth){
+            jumpMonth--;
+            if (jumpMonth <= 0){
+                jumpMonth = 12;
+                jumpYear--;
+            }
+        }else {
+            jumpMonth++;
+            if (jumpMonth > 12) {
+                jumpMonth = 1;
+                jumpYear++;
+            }
+        }
+        changeGridView();
+    }
+
     public View.OnClickListener changePageEvent() {
         return new View.OnClickListener() {
             @Override
@@ -143,20 +186,10 @@ public class MainActivity extends AppCompatActivity {
                 int viewId = v.getId();
                 switch (viewId){
                     case R.id.lastMonth:
-                        jumpMonth--;
-                        if (jumpMonth <= 0){
-                            jumpMonth = 12;
-                            jumpYear--;
-                        }
-                        changeGridView();
+                        changeMonth(false);
                         break;
                     case R.id.nextMonth:
-                        jumpMonth++;
-                        if (jumpMonth > 12) {
-                            jumpMonth = 1;
-                            jumpYear++;
-                        }
-                        changeGridView();
+                        changeMonth(true);
                         break;
                     default:
 
