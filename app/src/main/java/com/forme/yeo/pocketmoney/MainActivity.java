@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                     case MotionEvent.ACTION_UP:
                         float difX = event.getX() - touchDX;
                         float difY = Math.abs(event.getY() - touchDY);
-                        if (difY < 60 && Math.abs(difX) > 200){
+                        if (difY < Math.abs(difX) && Math.abs(difX) > 100){
                             if ( difX < 0){
                                 changeMonth(false);
                             }else {
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                         touchDY = event.getY();
                         break;
                 }
-                return true;
+                return false;
             }
         });
     }
@@ -162,8 +162,8 @@ public class MainActivity extends AppCompatActivity {
         changeGridView();
     }
 
-    public void changeMonth( boolean nextMonth){
-        if (nextMonth){
+    public void changeMonth( boolean lastMonth){
+        if (lastMonth){
             jumpMonth--;
             if (jumpMonth <= 0){
                 jumpMonth = 12;
@@ -186,10 +186,10 @@ public class MainActivity extends AppCompatActivity {
                 int viewId = v.getId();
                 switch (viewId){
                     case R.id.lastMonth:
-                        changeMonth(false);
+                        changeMonth(true);
                         break;
                     case R.id.nextMonth:
-                        changeMonth(true);
+                        changeMonth(false);
                         break;
                     default:
 
