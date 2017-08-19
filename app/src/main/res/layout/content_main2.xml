@@ -31,12 +31,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
+            android:labelFor="@+id/etDate"
             android:text="Date: "/>
         <EditText
+            android:inputType="date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.7"
-            android:id="@+id/etDate">
+            android:id="@id/etDate">
 
         </EditText>
     </LinearLayout>
@@ -49,12 +51,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
+            android:labelFor="@+id/spnType"
             android:text="Type: "/>
         <Spinner
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.7"
-            android:id="@+id/spnType">
+            android:id="@id/spnType">
 
         </Spinner>
     </LinearLayout>
@@ -67,12 +70,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
+            android:labelFor="@+id/etAmount"
             android:text="Amount: "/>
         <EditText
+            android:inputType="number"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.7"
-            android:id="@+id/etAmount">
+            android:id="@id/etAmount">
 
         </EditText>
     </LinearLayout>
@@ -85,12 +90,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
+            android:labelFor="@+id/etDescribe"
             android:text="Describe: "/>
         <EditText
+            android:inputType="text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.7"
-            android:id="@+id/etDescribe"
+            android:id="@id/etDescribe"
             android:lines="7"
             android:scrollbars="vertical"
             android:maxLines="10"
@@ -114,6 +121,15 @@
             android:layout_weight="0.5"
             android:id="@+id/btnNewOk"
             android:text="OK!"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:id="@+id/btnNewDelete"
+            android:visibility="gone"
+            android:text="Delete">
+
+        </Button>
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"

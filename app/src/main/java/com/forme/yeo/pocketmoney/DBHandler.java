@@ -50,20 +50,17 @@ public class DBHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertDetail (HashMap<String, Object> singleItem){
+    public boolean updateOrInsertDetail(HashMap<String, Object> singleItem){
         SQLiteDatabase db = this.getWritableDatabase();
         SQLiteDatabase db_read = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
+        boolean idExisted = true;
         String temp_id = String.valueOf(singleItem.get(DETAIL_ID));
         String sql = "SELECT * " +
                 " FROM " + TABLE_DETAIL +
                 " WHERE " + DETAIL_ID + " = ? ";
-        while (true){
-            if (!db_read.rawQuery(sql, new String[]{temp_id}).moveToFirst()){
-                break;
-            }
-            temp_id = genID();
-            Log.e("!!!!!!!!!!!!!!", temp_id);
+        if (!db_read.rawQuery(sql, new String[]{temp_id}).moveToFirst()){
+            idExisted = false;
         }
         contentValues.put(DETAIL_ID, temp_id);
         contentValues.put(DETAIL_YEAR, (int)(singleItem.get(DETAIL_YEAR)));
@@ -72,7 +69,10 @@ public class DBHandler extends SQLiteOpenHelper {
         contentValues.put(DETAIL_TYPE, String.valueOf(singleItem.get(DETAIL_TYPE)));
         contentValues.put(DETAIL_DESCRIBE, String.valueOf(singleItem.get(DETAIL_DESCRIBE)));
         contentValues.put(DETAIL_AMOUNT, (int)singleItem.get(DETAIL_AMOUNT));
-        db.insert(TABLE_DETAIL, null, contentValues);
+        if (idExisted)
+            db.update(TABLE_DETAIL, contentValues, DETAIL_ID + "= ?", new String[]{temp_id});
+        else
+            db.insert(TABLE_DETAIL, null, contentValues);
         db.close();
         return true;
     }

@@ -1,5 +1,6 @@
 package com.forme.yeo.pocketmoney;
 
+import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
@@ -10,7 +11,7 @@ import java.util.HashMap;
 /**
  * Created by Yeo on 10/9/2016.
  */
-public class SingleItem {
+public class SingleItem implements Serializable {
     public int amount;
     public int year;
     public int month;
@@ -19,6 +20,9 @@ public class SingleItem {
     public String describe;
     public String _id;
 
+    public SingleItem (){
+        _id = genID();
+    }
     public SingleItem (String id, int y, int m, int d, String de, String t, int a){
         _id = id;
         year = y;
@@ -41,10 +45,7 @@ public class SingleItem {
 
     public SingleItem (String date, String de, String t, int a){
         _id = genID();
-        String[] s = date.split("-");
-        year = Integer.parseInt(s[0]);
-        month = Integer.parseInt(s[1]);
-        day = Integer.parseInt(s[2]);
+        setDate(date);
         describe = de;
         type = setType(t);
         amount = a;
@@ -58,6 +59,13 @@ public class SingleItem {
         describe = String.valueOf(item.get(DBHandler.DETAIL_DESCRIBE));
         type = setType(String.valueOf(item.get(DBHandler.DETAIL_TYPE)));
         amount = (int)item.get(DBHandler.DETAIL_AMOUNT);
+    }
+
+    public void setDate(String date){
+        String[] s = date.split("-");
+        year = Integer.parseInt(s[0]);
+        month = Integer.parseInt(s[1]);
+        day = Integer.parseInt(s[2]);
     }
 
     private String setType(String original){

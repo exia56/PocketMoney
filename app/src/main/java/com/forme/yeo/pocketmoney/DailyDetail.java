@@ -2,6 +2,7 @@ package com.forme.yeo.pocketmoney;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,7 +12,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -52,10 +55,9 @@ public class DailyDetail extends AppCompatActivity {
                     })
                     .create().show();
         }
-        detailList = dbHandler.getDayDetail(year, month, day);
         lvDetail = (ListView) findViewById(R.id.lvDetail);
-        detailListAdapter = new DetailListAdapter(this, detailList);
-        lvDetail.setAdapter(detailListAdapter);
+
+        lvDetail.setOnItemClickListener(Button_Click);
 
         if (getActionBar() != null ){
             getActionBar().setTitle(year + "-" + month + "-" + day);
@@ -65,9 +67,26 @@ public class DailyDetail extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        detailList = dbHandler.getDayDetail(year, month, day);
+        detailListAdapter = new DetailListAdapter(this, detailList);
+        lvDetail.setAdapter(detailListAdapter);
+    }
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
         finish();
     }
 
+    private AdapterView.OnItemClickListener Button_Click = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+            Intent intent = new Intent(DailyDetail.this, Main2Activity.class);
+            SingleItem item = new SingleItem(detailList.get(position));
+            intent.putExtra("item", item);
+            startActivity(intent);
+        }
+    };
 }
