@@ -90,18 +90,17 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
-            android:labelFor="@+id/etDescribe"
             android:text="Describe: "/>
         <EditText
-            android:inputType="text"
+            android:inputType="textMultiLine"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.7"
-            android:id="@id/etDescribe"
+            android:id="@+id/etDescribe"
             android:lines="7"
             android:scrollbars="vertical"
             android:maxLines="10"
-            android:gravity="top|left">
+            android:gravity="top|start">
 
         </EditText>
     </LinearLayout>

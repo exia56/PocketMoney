@@ -4,7 +4,6 @@
 
     <TextView
         android:id="@+id/tvType"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:textSize="16sp"
         android:textColor="#000"
@@ -13,13 +12,23 @@
         android:text="asdasdasdasd"/>
     <TextView
         android:id="@+id/tvMoney"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:textSize="18sp"
         android:textColor="@color/colorAccent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="asdasdasdasd" />
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/tvMoney"
+        android:textSize="16sp"
+        android:textColor="#000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="asdasdasdasd"
+        android:visibility="gone"/>
     <TextView
         android:id="@+id/tvDescribe"
         android:layout_below="@id/tvType"

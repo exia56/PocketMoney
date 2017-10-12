@@ -3,4 +3,5 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_main2">New Item</string>
     <string name="title_activity_daily_detail">DailyDetail</string>
+    <string name="title_activity_search">SearchActivity</string>
 </resources>

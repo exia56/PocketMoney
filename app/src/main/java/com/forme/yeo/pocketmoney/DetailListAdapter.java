@@ -26,6 +26,11 @@ public class DetailListAdapter extends BaseAdapter {
         detailList = l;
     }
 
+    public void update (List<HashMap<String, Object>> l){
+        detailList = l;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         return detailList.size();

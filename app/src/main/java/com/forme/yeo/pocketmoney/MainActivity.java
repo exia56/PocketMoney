@@ -120,7 +120,13 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         switch (id) {
-            case R.id.action_settings:
+            case R.id.action_import:
+                boolean a = dbHandler.importDB();
+                Log.e("12323", "" + a);
+                return true;
+            case R.id.action_search:
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(intent);
                 return true;
             case R.id.action_delete:
                 AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
