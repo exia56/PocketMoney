@@ -213,22 +213,25 @@ public class DBHandler extends SQLiteOpenHelper {
         if (cursor.moveToFirst()){
             returnAmount = cursor.getInt(0);
         }
+        cursor.close();
         db.close();
         return returnAmount;
     }
 
-    public void exportDB(){
+    void exportDB(){
         File sd = Environment.getExternalStorageDirectory();
         File data = Environment.getDataDirectory();
-        Log.d("DBDBDBDB SDSD", sd.getAbsolutePath());
-        Log.d("DBDBDBDB DADA", data.getAbsolutePath());
         FileChannel source=null;
         FileChannel destination=null;
-        String currentDBPath = "/data/data/"+ mContext.getPackageName() +"/databases/"+DATABASE_NAME;
-        String backupDBPath = DATABASE_NAME;
+        String currentDBPath = "/data/"+ mContext.getPackageName() +"/databases/"+DATABASE_NAME;
+        String backupDBPath = "BackupPM/" + DATABASE_NAME + ".db";
         File currentDB = new File(data, currentDBPath);
         File backupDB = new File(sd, backupDBPath);
         try {
+            if (!backupDB.exists()){
+                backupDB.getParentFile().mkdirs();
+                backupDB.createNewFile();
+            }
             source = new FileInputStream(currentDB).getChannel();
             destination = new FileOutputStream(backupDB).getChannel();
             destination.transferFrom(source, 0, source.size());

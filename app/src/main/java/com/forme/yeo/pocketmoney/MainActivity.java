@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         gridView = (GridView)findViewById(R.id.viewForCalendar);
 
         dbHandler = new DBHandler(MainActivity.this);
+//        dbHandler.importDB();
         initialView();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -121,8 +122,7 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         switch (id) {
             case R.id.action_import:
-                boolean a = dbHandler.importDB();
-                Log.e("12323", "" + a);
+                dbHandler.exportDB();
                 return true;
             case R.id.action_search:
                 Intent intent = new Intent(MainActivity.this, SearchActivity.class);
